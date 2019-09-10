@@ -1,0 +1,81 @@
+{
+  "name": "create-vue-template",
+  "version": "1.0.0",
+  "description": "create vue template",
+  "main": "index.js",
+  "bin": {
+    "cvt": "index.js"
+  },
+  "scripts": {
+    "test": "kc",
+    "main": "webpack-dev-server --open --config config/webpack.config.js",
+    "watch": "webpack --watch",
+    "dev": "webpack-dev-server --open --config config/webpack.dev.js",
+    "ncu": "ncu&&ncu -u&&yarn",
+    "buildbabel": "babel src -d dist",
+    "server": "node server.js",
+    "build": "webpack --config config/webpack.prod.js",
+    "precommit": "npm run lint-staged",
+    "prettier": "prettier --write \"./**/*.{js,jsx,css,less,md,json}\"",
+    "eslint": "eslint .",
+    "eslint:fix": "eslint . --fix"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^3.0.1",
+    "debug": "^4.1.1",
+    "download-git-repo": "^2.0.0",
+    "fs-extra": "^8.1.0",
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/runtime": "^7.6.0",
+    "@babel/plugin-transform-runtime": "^7.6.0",
+    "@babel/polyfill": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "axios": "^0.19.0",
+    "bootstrap": "^4.3.1",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-vue-jsx": "^3.7.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.2.0",
+    "csv-loader": "^3.0.2",
+    "express": "^4.17.1",
+    "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-template": "^6.2.0",
+    "licia": "^1.7.0",
+    "lodash": "^4.17.15",
+    "mockjs": "^1.0.1-beta3",
+    "prettier": "^1.18.2",
+    "serve-static": "^1.14.1",
+    "socket.io": "^2.2.0",
+    "style-loader": "^1.0.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.8",
+    "webpack-dev-middleware": "^3.7.1",
+    "webpack-dev-server": "^3.8.0",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-merge": "^4.2.2",
+    "xml-loader": "^1.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yzqdev/create-vue-template.git"
+  },
+  "keywords": [
+    "cli",
+    "vue",
+    "template"
+  ],
+  "author": "yzqdev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yzqdev/create-vue-templateissues"
+  },
+  "homepage": "https://github.com/yzqdev/create-vue-template#readme"
+}
