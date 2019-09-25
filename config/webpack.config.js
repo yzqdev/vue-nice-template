@@ -5,7 +5,7 @@ const htmlWebpackPlugin = require("html-webpack-plugin");
 const os=require('os');
 module.exports = {
   entry: {
-    app: "./src/index.js",
+    app: "./src/vnt",
     another: "./src/another-module.js",
     bootcss: "./src/bootcss.js"
   },

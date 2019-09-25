@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+process.title = `vnt`;
+
+process.env.NODE_PATH = `${__dirname}/../node_modules/`;
+const program = require(`commander`);
+const Project = require(`../src/project`);
+program
+  .version(require(`../package`).version)
+  .usage(`<lib> [options]`)
+  .command(`generate`, `generate file from a template (short-cut alias: "g")`);
+program
+  .command(`create`)
+  .alias(`c`)
+  .action(() => {
+    require(`../src/createProj`);
+  });
+
+program
+  .command(`list`)
+  .description(`列出文件`)
+  .alias(`ls`)
+  .action(() => {
+    require(`../lib/list`);
+  });
+
+program
+  .command(`add`)
+  .description(`添加文件`)
+  .alias(`a`)
+  .action(() => {
+    require(`../lib/add`);
+  });
+
+program
+  .command(`init`)
+  .description(`初始化模板`)
+  .alias(`i`)
+  .action(() => {
+    require(`../lib/init`);
+  });
+program.parse(process.argv);
+if (!program.args.length) {
+  program.help();
+}
