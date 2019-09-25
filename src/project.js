@@ -1,5 +1,5 @@
 const inquirer = require(`inquirer`);
-const fse = require(`fs-extra`);
+const fs = require(`fs-extra`);
 const download = require(`../plugins/downGitRepo`);
 const { constants } = require(`./config`);
 const chalk = require(`chalk`);
@@ -41,13 +41,13 @@ Project.prototype.inquire = function() {
         if (!input) {
           return `项目名不能为空`;
         }
-        if (fse.existsSync(input)) {
+        if (fs.existsSync(input)) {
           return `当前目录已存在同名项目，请更换项目名`;
         }
         return true;
       }
     });
-  } else if (fse.existsSync(projectName)) {
+  } else if (fs.existsSync(projectName)) {
     prompts.push({
       type: `input`,
       name: `projectName`,
@@ -56,7 +56,7 @@ Project.prototype.inquire = function() {
         if (!input) {
           return `项目名不能为空`;
         }
-        if (fse.existsSync(input)) {
+        if (fs.existsSync(input)) {
           return `当前目录已存在同名项目，请更换项目名`;
         }
         return true;
@@ -108,13 +108,13 @@ Project.prototype.generate = function() {
     const copyFiles = getDirFileName(downloadPath);
 
     copyFiles.forEach(file => {
-      fse.copySync(path.join(downloadPath, file), path.join(projectPath, file));
+      fs.copySync(path.join(downloadPath, file), path.join(projectPath, file));
       console.log(
         `${chalk.green(`✔ `)}${chalk.grey(`创建: ${projectName}/${file}`)}`
       );
     });
 
-    INJECT_FILES.forEach(file => {
+    constants.INJECT_FILES.forEach(file => {
       this.injectTemplate(
         path.join(downloadPath, file),
         path.join(projectName, file),
@@ -132,12 +132,12 @@ Project.prototype.generate = function() {
         );
       });
 
-      fse.remove(downloadPath);
+      fs.remove(downloadPath);
 
       process.chdir(projectPath);
 
       // Git 初始化
-      console.log();
+
       const gitInitSpinner = ora(
         `cd ${chalk.green.bold(projectName)}目录, 执行 ${chalk.green.bold(
           `git init`
@@ -157,27 +157,41 @@ Project.prototype.generate = function() {
 
         // 安装依赖
         console.log();
-        const installSpinner = ora(
-          `安装项目依赖 ${chalk.green.bold(`yarn`)}, 请稍后...`
-        );
-        installSpinner.start();
-        exec(`yarn`, (error, stdout, stderr) => {
-          if (error) {
-            installSpinner.color = `red`;
-            installSpinner.fail(
-              chalk.red(`安装项目依赖失败，请自行重新安装！`)
-            );
-            console.log(error);
-          } else {
-            installSpinner.color = `green`;
-            installSpinner.succeed(`安装依赖成功`);
-            console.log(`${stderr}${stdout}`);
-
+        inquirer
+          .prompt([
+            {
+              type: `input`,
+              name: `last_name`,
+              message: `是否使用yarn或者npm安装依赖? y or n`,
+              validate: value => value === `y`
+            } /* Pass your questions in here */
+          ])
+          .then(answers => {
             console.log();
-            console.log(chalk.green(`创建项目成功！`));
-            console.log(chalk.green(`Let's Coding吧！嘿嘿😝`));
-          }
-        });
+            const installSpinner = ora(
+              `安装项目依赖 ${chalk.green.bold(`yarn`)}, 请稍后...`
+            );
+            installSpinner.start();
+            exec(`yarn`, (error, stdout, stderr) => {
+              if (error) {
+                installSpinner.color = `red`;
+                installSpinner.fail(
+                  chalk.red(`安装项目依赖失败，请自行重新安装！`)
+                );
+                console.log(error);
+              } else {
+                installSpinner.color = `green`;
+                installSpinner.succeed(`安装依赖成功`);
+                console.log(`${stderr}${stdout}`);
+
+                console.log();
+                console.log(chalk.green(`创建项目成功！`));
+                console.log(chalk.green(`Let's Coding吧！嘿嘿😝`));
+              }
+            }); // Use user feedback for... whatever!!
+          }).catch(err => {
+            console.log(err);
+          });
       });
     });
   });
